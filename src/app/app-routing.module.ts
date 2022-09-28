@@ -11,7 +11,7 @@ import { DatatableComponent } from './datatable/datatable.component';
 import {ImportXmlComponent} from "./import-xml/import-xml.component";
 
 const routes: Routes = [
-  { path: 'import-xml', component: ImportXmlComponent },
+  { path: 'importXml', component: ImportXmlComponent },
   { path: 'buttonIcon', component: ButtonsIconsComponent },
   { path: 'formFieldInput', component: FormFieldInputComponent },
   { path: 'progBarSpinner', component: ProgressSpinnerComponent },

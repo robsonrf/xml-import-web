@@ -1,1 +1,46 @@
-<p>import-xml works!</p>
+<div style="text-align:center; margin-top: 100px; ">
+
+  <h1>Upload de arquivos.</h1>
+  <br>
+  <h2>Selecione os arquivos XML</h2>
+
+
+  <mat-card style="margin-top:10px; width: 90%;">
+
+    <mat-card-content>
+
+      <div id="load-container"  >
+
+        <div *ngIf="loadingPercent > 0" id="load" >
+          <h1>Processando ...</h1>
+          <mat-progress-spinner
+            [value]="loadingPercent"
+            color="primary">
+          </mat-progress-spinner>
+        </div>
+
+      </div>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+
+      <button mat-button color="primary" (click)="onClick()"  >
+        <mat-icon>file_upload</mat-icon>
+        Upload
+      </button>
+
+    </mat-card-actions>
+
+  </mat-card>
+
+  <input #fileUpload
+         id="fileUpload"
+         type="file"
+         name="fileUpload"
+         multiple="multiple"
+         accept="text/xml"
+         style="display:none;"/>
+
+</div>
+

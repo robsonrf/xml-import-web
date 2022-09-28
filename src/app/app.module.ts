@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from './app.component';
@@ -18,6 +18,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { DialogModalComponent } from './dialog/dialog-modal/dialog-modal.component';
 import { DatatableComponent } from './datatable/datatable.component';
 import { ImportXmlComponent } from './import-xml/import-xml.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { ImportXmlComponent } from './import-xml/import-xml.component';
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
