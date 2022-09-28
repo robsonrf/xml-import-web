@@ -1,8 +1,8 @@
 <div style="text-align:center; margin-top: 100px; ">
 
-  <h1>Upload de arquivos.</h1>
+  <h1>Upload de arquivos XML</h1>
   <br>
-  <h2>Selecione os arquivos XML</h2>
+  <h2>Clique no botão abaixo para selecione os arquivos</h2>
 
 
   <mat-card style="margin-top:10px; width: 90%;">
@@ -11,7 +11,7 @@
 
       <div id="load-container"  >
 
-        <div *ngIf="loadingPercent > 0" id="load" >
+        <div *ngIf="loading" id="load" >
           <h1>Processando ...</h1>
           <mat-progress-spinner
             [value]="loadingPercent"

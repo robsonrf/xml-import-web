@@ -7,7 +7,7 @@ import {map} from 'rxjs/operators';
 })
 export class UploadService {
 
-  SERVER_URL: string = "https://file.io/";    // TODO URL
+  SERVER_URL = "http://localhost:8080/desafio-ccee/save-xml-data";
 
   constructor(private httpClient: HttpClient) {
   }
