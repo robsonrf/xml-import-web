@@ -90,6 +90,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "desafio-ccee:build",
+            "proxyConfig": "proxy.config.json"
+          },
           "configurations": {
             "production": {
               "browserTarget": "desafio-ccee-web:build:production"
@@ -99,6 +103,7 @@
             }
           },
           "defaultConfiguration": "development"
+
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

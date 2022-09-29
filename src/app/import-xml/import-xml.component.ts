@@ -1,11 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
-import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
-import { of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 import { UploadService } from  '../upload.service';
-
 import * as converter from 'xml-js';
-
 import { FormGroup } from '@angular/forms';
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -50,16 +45,21 @@ export class ImportXmlComponent implements OnInit {
     fileUpload.onchange = () => {
       for (let index = 0; index < fileUpload.files.length; index++) {
         const file = fileUpload.files[index];
+
         let jsonFile = {
           data: file,
           inProgress: false,
           progress: 0
         };
+
         this.sizeTotalFiles += file.size;
         // @ts-ignore
         this.files.push( jsonFile );
+
       }
+
       this.uploadFiles();
+
     };
     fileUpload.click();
   }
@@ -67,45 +67,10 @@ export class ImportXmlComponent implements OnInit {
   private uploadFiles() {
     this.fileUpload.nativeElement.value = '';
     this.files.forEach(file => {
-      this.uploadFile(file);
+      // @ts-ignore
+      this.loadFileData(file.data);
     });
   }
-
-  uploadFile(file) {
-    const formData = new FormData();
-    formData.append('file', file.data);
-    file.inProgress = true;
-    this.uploadService.upload(formData)
-      .pipe(
-        map(event => {
-          switch (event.type) {
-            case HttpEventType.UploadProgress:
-              // @ts-ignore
-              file.progress = Math.round(event.loaded * 100 / event.total);
-              this.totalSent += event.loaded;
-              this.loadingPercent = Math.round(this.totalSent * 100 / this.sizeTotalFiles);
-
-              if (file.progress == 100) {  // 100%
-                // @ts-ignore
-                this.loadFileData(file.data);
-              }
-              break;
-            case HttpEventType.Response:
-              return event;
-          }
-        }),
-        catchError((error: HttpErrorResponse) => {
-          file.inProgress = false;
-          return of(`${file.data.name} Erro ao fazer o upload.`);
-        }))
-      .subscribe((event: any) => {
-        if (typeof (event) === 'object') {
-          // evento (do browser) apenas indicando que conclui o carregamento do arquivo
-          // console.log(event.body);
-        }
-    });
-  }
-
 
   private loadFileData(file) {
 
@@ -159,11 +124,15 @@ export class ImportXmlComponent implements OnInit {
         }
       }
 
-      this.totalSentFiles++;
+      this.updateProgress();
 
-      // TODO enviar dados pro back
+      console.log("Carregando dados: ", this.agenteList);
 
-      console.log("Total importado: " + this.totalSentFiles + "\t\tImportando dados do arquivo:" + file.name, this.agenteList );
+      this.uploadService.upload(this.agenteList)
+        .subscribe(response => {
+          let msgLog = "Total importado: " + this.totalSentFiles + "\t\tImportado dados do arquivo:" + file.name;
+          console.log(msgLog, this.agenteList );
+        } );
 
       if (this.totalSentFiles == this.files.length) {
         console.log("Ocultando progress");
@@ -176,19 +145,26 @@ export class ImportXmlComponent implements OnInit {
 
   }
 
+  private waiting(time: number) {
+    setTimeout(() => {
+      console.log("waiting...")
+    }, 1000);
+  }
+
+  private updateProgress() {
+    this.totalSentFiles++;
+    this.loadingPercent = Math.round(this.totalSentFiles * 100 / this.files.length);
+    this.waiting(5000);
+  }
 
   private openSnackBar() {
     const snackBar = this.snackbar.open('Arquivos enviados com sucesso', 'Fechar', {
       duration: 4000
     })
 
-    snackBar.afterDismissed().subscribe(_ => {
-      console.log('Dismissed');
-    })
+    snackBar.afterDismissed().subscribe(_ => {  })
 
-    snackBar.onAction().subscribe(_ => {
-      console.log('After Action');
-    })
+    snackBar.onAction().subscribe(_ => { })
   }
 
 }
